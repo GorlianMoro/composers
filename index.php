@@ -45,12 +45,6 @@ foreach ($collection as $item)
     $item->getLatitude(); // широта
     $item->getLongitude(); // долгота
     $item->getData(); // необработанные данные
-    $adr = $item->getAddress();
-    $adr = $_GET['adres'];
-    $lat = $item->getLatitude();
-    $lat = $_GET['latitude'];
-    $lon = $item->getLongitude();
-    $lon = $_GET['longitude'];
 }
  ?>
 
