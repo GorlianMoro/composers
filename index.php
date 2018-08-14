@@ -41,10 +41,16 @@ $response->getLongitude(); // долгота для исходного запр�
 $collection = $response->getList();
 foreach ($collection as $item)
 {
-    $adr = $item->getAddress(); // вернет адрес
-  $latitu = $item->getLatitude(); // широта
-  $lonitu = $item->getLongitude(); // долгота
+    $item->getAddress(); // вернет адрес
+    $item->getLatitude(); // широта
+    $item->getLongitude(); // долгота
     $item->getData(); // необработанные данные
+    $adr = $item->getAddress();
+    $adr = $_GET['adres'];
+    $lat = $item->getLatitude();
+    $lat = $_GET['latitude'];
+    $lon = $item->getLongitude();
+    $lon = $_GET['longitude'];
 }
  ?>
 
@@ -59,10 +65,10 @@ foreach ($collection as $item)
      ymaps.ready(init);
           function init(){
               var myMap = new ymaps.Map("map", {
-                  center: [55.76, 37.64],
+                  center: ['<?php echo $lat = $_GET['lat'] ?>', '<?php echo $lon = $_GET['lon'] ?>'],
                   zoom: 7
               });
-              var myPlacemark = new ymaps.Placemark([55.76, 37.64], {
+              var myPlacemark = new ymaps.Placemark(['<?php echo $lat = $_GET['lat'] ?>', '<?php echo $lon = $_GET['lon'] ?>'], {
                   hintContent: 'Содержимое всплывающей подсказки',
                   balloonContent: 'Содержимое балуна'
               });
@@ -87,9 +93,9 @@ foreach ($collection as $item)
          <tr>
            <?php foreach ($collection as $item)
            { ?>
-           <td> <a href="index.php?<?php  ?>"><?php echo $item->getAddress() . '<br>'; ?></a> </td>
+           <td> <a href="index.php?adr=<?php echo $item->getAddress()?>&lat=<?php echo $item->getLatitude() ?>&lon=<?php echo $item->getLongitude() ?>"><?php echo $item->getAddress() . '<br>'; ?></a> </td>
            <td><?php echo $item->getLatitude() . '<br>'; ?></td>
-           <td><?php echo $item->getLongitude() . '<br>'; ?></td>
+           <td><?php echo $item->getLongitude() . '<br>';?></td>
          </tr>
           <?php } ?>
        </tbody>
