@@ -1,30 +1,29 @@
 <?php
 require __DIR__ . '/vendor/autoload.php';
 
-if (isset($_POST['found']))
+
+if (isset($_GET['lat']))
 {
-  if (isset($_POST['latitude']))
-  {
-    $lati = htmlentities($_POST['latitude']);
-  }
-  if (isset($_POST['longitude']))
-  {
-    $long = htmlentities($_POST['longitude']);
-  }
-  if (isset($_POST['adress']))
-  {
-    $adres = htmlentities($_POST['adress']);
-  }
+  $lat = $_GET['lat'];
+}
+
+if (isset($_GET['lon']))
+{
+  $lon = $_GET['lon'];
 }
 
 $api = new Yandex\Geo\Api();
 
-// Можно искать по точке
-$api->setPoint($lati, $long);
-
-// Или можно икать по адресу
-$api->setQuery($adres);
-
+if (isset($_POST['found']))
+{
+  $api->setPoint('', '');
+  
+  if (isset($_POST['adress']))
+  {
+    $adres = htmlentities($_POST['adress']);
+    $api->setQuery("$adres");
+  }
+}
 // Настройка фильтров
 $api
     ->setLimit('') // кол-во результатов
@@ -59,10 +58,10 @@ foreach ($collection as $item)
      ymaps.ready(init);
           function init(){
               var myMap = new ymaps.Map("map", {
-                  center: ['<?php echo $lat = $_GET['lat'] ?>', '<?php echo $lon = $_GET['lon'] ?>'],
+                  center: ['<?php echo $lat; ?>', '<?php echo $lon; ?>'],
                   zoom: 7
               });
-              var myPlacemark = new ymaps.Placemark(['<?php echo $lat = $_GET['lat'] ?>', '<?php echo $lon = $_GET['lon'] ?>'], {
+              var myPlacemark = new ymaps.Placemark(['<?php echo $lat; ?>', '<?php echo $lon; ?>'], {
                   hintContent: 'Содержимое всплывающей подсказки',
                   balloonContent: 'Содержимое балуна'
               });
@@ -72,8 +71,6 @@ foreach ($collection as $item)
    </head>
    <body>
      <form class="" action="index.php" method="post">
-       <input type="text" name="latitude" value="" placeholder="широта">
-       <input type="text" name="longitude" value="" placeholder="долгота">
        <input type="text" name="adress" value="" placeholder="Адрес">
        <input type="submit" name="found" value="Найти">
      </form> <br>
